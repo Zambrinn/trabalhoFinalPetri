@@ -28,7 +28,7 @@ public class ListaSimples implements EstruturaSimples {
             System.out.println("O índice é invalido");
         }
 
-        for (int i = tamanho - 1; i >= indice; i++) { // Manda os elementos para a "direita" do vetor
+        for (int i = tamanho - 1; i >= indice; i++) { // Manda os elementos para a "direita" do vetor [1][2][3][4] [1][][3][4]
             elementos[i + 1] = elementos[i];
         }
 
@@ -60,7 +60,7 @@ public class ListaSimples implements EstruturaSimples {
 
     @Override
     public Object removerIndice(int indice) {
-        if (estaVazia() || indice < 0 || indice >= tamanho) {
+        if (estaVazia() || indice < 0 || indice > tamanho) {
             return 0;
         }
 
@@ -139,47 +139,28 @@ public class ListaSimples implements EstruturaSimples {
 
     @Override
     public void ordenarCrescente() {
-        for (int i = 0; i < tamanho; i++) {
-            if (elementos[i] != null) {
-                try {
-                    elementos[i] = Integer.parseInt((String) elementos[i]);
-                } catch (Exception e) {
-                    System.out.println("Não foi possivel converter o objeto para inteiro");
-                    return;
-                }
-            }
-        }
+        for (int i = 0; i < tamanho - 1; i++) {
+            for (int j = i + 1; j < tamanho; j++) {
+                if (elementos[i] instanceof Integer && elementos[j] instanceof Integer) {
+                    Integer firstValue = (Integer) elementos[i];
+                    Integer secondValue = (Integer) elementos[j];
 
-
-        for (int i = 0; i < tamanho - 1; i++) { // Vai do primeiro até o penultimo elemento
-            for (int j = i + 1; j < tamanho ; j++) { // Vai do elemento i até o final
-                Integer firstValue = (Integer) elementos[i];
-                Integer secondValue = (Integer) elementos[j];
-
-                if (firstValue > secondValue) { // Caso o numero da frente for maior, trocamos a posição usando um aux
-                    Object auxiliar = elementos[i];
-                    elementos[i] = elementos[j];
-                    elementos[j] = auxiliar;
+                    if (firstValue > secondValue) {
+                        Object auxiliar = elementos[i];
+                        elementos[i] = elementos[j];
+                        elementos[j] = auxiliar;
+                    }
+                } else {
+                    System.out.println("Erro: Elementos incompatíveis com ordenação (precisam ser inteiros).");
+                    return; // ou você pode continuar, depende do comportamento que quiser
                 }
             }
         }
         System.out.println("Fila ordenada em ordem crescente!!");
-        exibir();
     }
 
     @Override
     public void ordenarDecrescente() {
-        for (int i = 0; i < tamanho; i++) {
-            if (elementos[i] != null) {
-                try {
-                    elementos[i] = Integer.parseInt((String) elementos[i]);
-                } catch (Exception e) {
-                    System.out.println("Não foi possivel converter o objeto para inteiro");
-                    return;
-                }
-            }
-        }
-
         for (int i = 0; i < tamanho - 1; i++) {
             for (int j = i + 1; j < tamanho; j++) {
                 Integer firstValue = (Integer) elementos[i];
@@ -193,7 +174,6 @@ public class ListaSimples implements EstruturaSimples {
             }
         }
         System.out.println("Fila ordenada em ordem decrescente!!");
-        exibir();
     }
 
     @Override
@@ -218,7 +198,7 @@ public class ListaSimples implements EstruturaSimples {
     public void editarElemento(Object elementoAntigo, Object elementoNovo) {
         for (int i = 0; i < tamanho; i++) {
             if (elementos[i].equals(elementoAntigo)) { // Compara o elemento e verifica se é igual ao que queremos substituir
-                    elementos[i] = elementoNovo; // Caso for igual, substitui pelo novo elemento
+                elementos[i] = elementoNovo; // Caso for igual, substitui pelo novo elemento
             }
         }
     }
@@ -226,7 +206,7 @@ public class ListaSimples implements EstruturaSimples {
     @Override
     public void limpar() {
         for (int i = 0; i < tamanho; i++) {
-            elementos[i] = null; // Coloca "null" em cada posição do vetor (limpando a lista)
+            elementos[i] = null; // Coloca "null" em cada posição do vetor (limpando a lista) [1][2][3] [null][null][null]
         }
         tamanho = 0;
     }
@@ -248,7 +228,7 @@ public class ListaSimples implements EstruturaSimples {
         if (estaVazia()) {
             return "A lista está vazia";
         }
-        return elementos[0]; // Apenas retorna o primeiro elemento
+        return elementos[0]; // Apenas retorna o primeiro elemento [1][2][3]
     }
 
     @Override
